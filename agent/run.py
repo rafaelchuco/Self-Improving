@@ -4,6 +4,11 @@ import argparse
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+import sys
+
+if __package__ in (None, ""):
+    # Allow running this file directly: python agent/run.py ...
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from agent.graph import execute_graph
 from agent.state import AgentState

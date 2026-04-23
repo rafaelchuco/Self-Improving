@@ -45,12 +45,13 @@ Construir la base tecnica minima para que el agente lea un proyecto local y pued
 Alcance funcional:
 - Crear esqueleto del agente (runtime Python 3.11+).
 - Definir estado base de LangGraph.
-- Integrar Filesystem MCP y Git MCP.
+- Integrar adaptadores locales tipo MCP para Filesystem y Git (simulacion en Fase 0).
+- Dejar la integracion MCP real completa para Fase 1.
 - Implementar comando de arranque contra un workspace local.
 - Generar salida de "mapa inicial" del repo.
 
 Entregables:
-- CLI de ejecucion del agente (ejemplo: `python agent/run.py --workspace <path>`).
+- CLI de ejecucion del agente (soporta `python run.py --workspace <path>`, `python agent/run.py --workspace <path>` y `python -m agent.run --workspace <path>`).
 - Primer grafo funcional (discovery basico).
 - Adaptador de lectura de archivos y estructura.
 - Adaptador de historial git minimo.
