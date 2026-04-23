@@ -42,6 +42,7 @@ def _render_readme(state: AgentState) -> str:
     routes = repo_map.get("routes", [])
     test_files = repo_map.get("test_files", [])
     hotspots = repo_map.get("hotspots", {}).get("largest_files", [])
+    contradictions = repo_map.get("contradictions", [])
 
     lines: list[str] = []
     lines.append(f"# {project_name}")
@@ -101,6 +102,14 @@ def _render_readme(state: AgentState) -> str:
     if test_files:
         for test_file in test_files[:20]:
             lines.append(f"- `{test_file}`")
+    lines.append("")
+    lines.append("## Consistencia de configuracion")
+    lines.append("")
+    if contradictions:
+        for contradiction in contradictions[:10]:
+            lines.append(f"- {contradiction}")
+    else:
+        lines.append("- Sin contradicciones detectadas entre AGENT_CONFIG y evidencia del repo.")
     lines.append("")
     lines.append("## Hotspots tecnicos")
     lines.append("")

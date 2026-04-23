@@ -2,3 +2,5 @@
 __pycache__/
 *.pyc
 logs/
+.agent_backups/
+docs/.agent_backups/

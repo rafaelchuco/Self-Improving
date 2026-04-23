@@ -38,6 +38,7 @@ class FilesystemMCPAdapter:
 
     IGNORED_DIRS = {
         ".git",
+        ".agent_backups",
         "__pycache__",
         ".venv",
         "venv",

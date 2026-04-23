@@ -1,11 +1,12 @@
 project:
   name: "My Project"
-  type: "frontend" # frontend | backend | fullstack
-  stack: []
+  type: "backend" # frontend | backend | fullstack
+  stack:
+    - "python"
 
 app:
-  local_url: "http://localhost:3000"
-  start_command: "npm run dev"
+  local_url: ""
+  start_command: "python run.py --workspace . --phase phase1"
 
 auth:
   enabled: false

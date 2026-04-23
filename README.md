@@ -4,10 +4,10 @@ README generado automaticamente por Self-Improving Agent (Fase 1).
 
 ## Contexto
 
-- Tipo de proyecto detectado: **frontend**
+- Tipo de proyecto detectado: **backend**
 - Stack detectado: **Python**
 - Branch actual: **main**
-- Analisis generado en UTC: **20260423T043309Z**
+- Analisis generado en UTC: **20260423T044457Z**
 
 ## Ejecucion
 
@@ -18,15 +18,17 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # Comando sugerido por AGENT_CONFIG
-npm run dev
+python run.py --workspace . --phase phase1
 ```
 
 ## Estructura principal
 
 - `.gitignore`
 - `.vscode`
+- `README.md`
 - `agent`
 - `config`
+- `docs`
 - `logs`
 - `requirements.txt`
 - `run.py`
@@ -35,7 +37,7 @@ npm run dev
 
 | Modulo | Archivos fuente | Lineas aproximadas |
 | --- | ---: | ---: |
-| agent | 10 | 981 |
+| agent | 10 | 1068 |
 | root | 1 | 6 |
 
 ## Rutas detectadas
@@ -46,11 +48,15 @@ npm run dev
 
 - Tests encontrados: **0**
 
+## Consistencia de configuracion
+
+- Sin contradicciones detectadas entre AGENT_CONFIG y evidencia del repo.
+
 ## Hotspots tecnicos
 
-- `agent/nodes/discovery.py` (314 lineas)
-- `agent/nodes/generation.py` (241 lineas)
-- `agent/adapters/filesystem_adapter.py` (163 lineas)
+- `agent/nodes/discovery.py` (391 lineas)
+- `agent/nodes/generation.py` (250 lineas)
+- `agent/adapters/filesystem_adapter.py` (164 lineas)
 - `agent/run.py` (101 lineas)
 - `agent/adapters/git_adapter.py` (81 lineas)
 - `agent/graph.py` (58 lineas)
@@ -60,9 +66,8 @@ npm run dev
 ## Oportunidades iniciales
 
 - [L2] Crear base de tests automatizados -> No se detectaron archivos de tests en el repositorio.
-- [L3] Refactorizar archivo de alta complejidad -> agent/nodes/discovery.py tiene 314 lineas.
-- [L1] Generar README base del proyecto -> No existe README.md en la raiz del workspace.
-- [L2] Agregar cobertura sobre zona de alta rotacion -> .vscode/Documents/roadmapImplementacionPorFases.md aparece como archivo de alta frecuencia de cambios.
+- [L3] Refactorizar archivo de alta complejidad -> agent/nodes/discovery.py tiene 391 lineas.
+- [L2] Agregar cobertura sobre zona de alta rotacion -> agent/run.py aparece como archivo de alta frecuencia de cambios.
 - [L1] Documentar rutas y flujos principales -> No se detectaron rutas explicitas con heuristicas actuales.
 
 ## Trazabilidad

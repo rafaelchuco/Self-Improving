@@ -136,6 +136,33 @@ def _build_opportunities(repo_map: dict, git_summary: dict) -> list[dict[str, st
             }
         )
 
+    for contradiction in repo_map.get("contradictions", []):
+        opportunities.append(
+            {
+                "level": "L1",
+                "title": "Alinear AGENT_CONFIG con evidencia del repositorio",
+                "evidence": str(contradiction),
+            }
+        )
+
+    present_levels = {str(item.get("level", "")) for item in opportunities}
+    if "L1" not in present_levels:
+        opportunities.append(
+            {
+                "level": "L1",
+                "title": "Documentar convenciones base del proyecto",
+                "evidence": "No se detectaron oportunidades L1 explicitas con heuristicas actuales.",
+            }
+        )
+    if "L2" not in present_levels:
+        opportunities.append(
+            {
+                "level": "L2",
+                "title": "Agregar validacion automatizada de regresion",
+                "evidence": "No se detectaron oportunidades L2 explicitas con heuristicas actuales.",
+            }
+        )
+
     while len(opportunities) < 3:
         opportunities.append(
             {
@@ -146,6 +173,48 @@ def _build_opportunities(repo_map: dict, git_summary: dict) -> list[dict[str, st
         )
 
     return opportunities[:6]
+
+
+def _detect_config_contradictions(config: dict, repo_map: dict) -> list[str]:
+    if not isinstance(config, dict):
+        return []
+
+    project_cfg = config.get("project", {}) if isinstance(config.get("project", {}), dict) else {}
+    app_cfg = config.get("app", {}) if isinstance(config.get("app", {}), dict) else {}
+
+    project_type = str(project_cfg.get("type", "")).strip().lower()
+    start_command = str(app_cfg.get("start_command", "")).strip().lower()
+
+    detected_stack = {str(item).strip().lower() for item in repo_map.get("stack", [])}
+    key_file_names = {Path(str(path)).name.lower() for path in repo_map.get("key_files", [])}
+
+    node_evidence = bool(
+        {"node.js", "javascript", "typescript", "react"} & detected_stack
+        or "package.json" in key_file_names
+    )
+    python_evidence = bool(
+        "python" in detected_stack
+        or "requirements.txt" in key_file_names
+        or "pyproject.toml" in key_file_names
+    )
+
+    contradictions: list[str] = []
+    if project_type == "frontend" and not node_evidence:
+        contradictions.append(
+            "project.type=frontend, pero no se encontro evidencia Node/JavaScript en el repositorio."
+        )
+
+    if start_command.startswith(("npm ", "pnpm ", "yarn ")) and not node_evidence:
+        contradictions.append(
+            "app.start_command usa npm/pnpm/yarn, pero no se detecto package.json ni stack Node.js."
+        )
+
+    if start_command.startswith(("python ", "python3 ")) and not python_evidence:
+        contradictions.append(
+            "app.start_command usa Python, pero no se detecto evidencia de stack Python."
+        )
+
+    return contradictions
 
 
 def run_discovery(state: AgentState) -> AgentState:
@@ -280,6 +349,13 @@ def run_discovery(state: AgentState) -> AgentState:
         "structure_total_entries": len(structure),
     }
 
+    contradictions = _detect_config_contradictions(config, repo_map)
+    if contradictions:
+        repo_map["contradictions"] = contradictions
+        notes.append(f"Config contradictions detected: {len(contradictions)}")
+        for contradiction in contradictions[:5]:
+            notes.append(f"config_contradiction: {contradiction}")
+
     opportunities = _build_opportunities(repo_map=repo_map, git_summary={"most_changed_files": most_changed})
 
     git_summary = {
@@ -289,8 +365,9 @@ def run_discovery(state: AgentState) -> AgentState:
         "most_changed_files": most_changed,
     }
 
-    runtime["phase"] = runtime.get("phase", "phase0")
-    runtime["discovery_version"] = "phase1"
+    current_phase = str(runtime.get("phase", "phase0"))
+    runtime["phase"] = current_phase
+    runtime["discovery_version"] = current_phase
 
     if config:
         config_preview = {
