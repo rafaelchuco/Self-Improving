@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Self Improving Login</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 2rem; }
+    form { max-width: 460px; display: grid; gap: 0.75rem; }
+    input, button { padding: 0.65rem; border-radius: 8px; border: 1px solid #c7d2de; }
+    button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Login</h1>
+  <p>Credentials for demo: demo / demo123</p>
+  <form id="loginForm">
+    <input id="username" name="username" type="text" placeholder="Username" required>
+    <input id="password" name="password" type="password" placeholder="Password" required>
+    <button type="submit">Sign In</button>
+  </form>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var username = document.getElementById('username').value || 'guest';
+      window.location.href = '/dashboard/?user=' + encodeURIComponent(username);
+    });
+  </script>
+</body>
+</html>
