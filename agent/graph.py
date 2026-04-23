@@ -3,6 +3,7 @@ from __future__ import annotations
 from copy import deepcopy
 
 from agent.nodes.discovery import run_discovery
+from agent.nodes.perception import run_perception
 from agent.nodes.generation import run_generation
 from agent.state import AgentState
 
@@ -20,9 +21,11 @@ def build_graph():
 
     graph = StateGraph(AgentState)
     graph.add_node("discovery", run_discovery)
+    graph.add_node("perception", run_perception)
     graph.add_node("generation", run_generation)
     graph.add_edge(START, "discovery")
-    graph.add_edge("discovery", "generation")
+    graph.add_edge("discovery", "perception")
+    graph.add_edge("perception", "generation")
     graph.add_edge("generation", END)
     return graph.compile()
 
@@ -46,6 +49,9 @@ def execute_graph(initial_state: AgentState) -> AgentState:
     state["runtime"] = runtime
 
     update = run_discovery(state)
+    state.update(update)
+
+    update = run_perception(state)
     state.update(update)
 
     update = run_generation(state)

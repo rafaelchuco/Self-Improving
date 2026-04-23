@@ -6,7 +6,7 @@
 
 ## Vista de modulos
 
-- **agent**: 10 archivos / 1068 lineas
+- **agent**: 11 archivos / 1584 lineas
 - **root**: 1 archivos / 6 lineas
 
 ## Rutas/Endpoints detectados

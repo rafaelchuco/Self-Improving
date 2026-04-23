@@ -20,7 +20,7 @@ def _write_with_backup(path: Path, content: str, timestamp: str) -> str | None:
     return backup_path
 
 
-def _render_readme(state: AgentState) -> str:
+def _render_readme(state: AgentState, phase: str) -> str:
     workspace = Path(state["workspace_path"])
     config = state.get("config", {})
     repo_map = state.get("repo_map", {})
@@ -43,11 +43,14 @@ def _render_readme(state: AgentState) -> str:
     test_files = repo_map.get("test_files", [])
     hotspots = repo_map.get("hotspots", {}).get("largest_files", [])
     contradictions = repo_map.get("contradictions", [])
+    perception_map = state.get("perception_map", {}) if isinstance(state.get("perception_map", {}), dict) else {}
+
+    phase_label = "Fase 2" if phase == "phase2" else "Fase 1"
 
     lines: list[str] = []
     lines.append(f"# {project_name}")
     lines.append("")
-    lines.append("README generado automaticamente por Self-Improving Agent (Fase 1).")
+    lines.append(f"README generado automaticamente por Self-Improving Agent ({phase_label}).")
     lines.append("")
     lines.append("## Contexto")
     lines.append("")
@@ -103,6 +106,43 @@ def _render_readme(state: AgentState) -> str:
         for test_file in test_files[:20]:
             lines.append(f"- `{test_file}`")
     lines.append("")
+
+    if phase == "phase2":
+        summary = perception_map.get("summary", {}) if isinstance(perception_map.get("summary", {}), dict) else {}
+        lines.append("## Percepcion UI")
+        lines.append("")
+        lines.append(f"- URL base analizada: **{perception_map.get('base_url') or 'no configurada'}**")
+        lines.append(f"- Pantallas evaluadas: **{summary.get('screens_total', 0)}**")
+        lines.append(f"- Pantallas alcanzables: **{summary.get('screens_reachable', 0)}**")
+        lines.append(f"- Screenshots capturados: **{summary.get('screens_with_screenshot', 0)}**")
+        lines.append(f"- Flujos detectados: **{summary.get('flows_detected', 0)}**")
+        lines.append(f"- Hallazgos UI accionables: **{summary.get('ui_issues', 0)}**")
+        lines.append("")
+
+        screens = perception_map.get("screens", [])
+        if isinstance(screens, list) and screens:
+            lines.append("### Pantallas mapeadas")
+            lines.append("")
+            for screen in screens[:8]:
+                route = screen.get("route", "/")
+                status = screen.get("status", "unknown")
+                screenshot = screen.get("screenshot")
+                details = f"- `{route}` -> {status}"
+                if screenshot:
+                    details += f" (screenshot: `{screenshot}`)"
+                lines.append(details)
+            lines.append("")
+
+        ui_issues = perception_map.get("ui_issues", [])
+        if isinstance(ui_issues, list) and ui_issues:
+            lines.append("### Hallazgos UI")
+            lines.append("")
+            for issue in ui_issues[:6]:
+                title = issue.get("title", "Sin titulo")
+                action = issue.get("action", "Sin accion sugerida")
+                lines.append(f"- {title} -> {action}")
+            lines.append("")
+
     lines.append("## Consistencia de configuracion")
     lines.append("")
     if contradictions:
@@ -130,7 +170,7 @@ def _render_readme(state: AgentState) -> str:
     lines.append("")
     lines.append("## Trazabilidad")
     lines.append("")
-    lines.append("Este documento se genero automaticamente desde el analisis del repositorio (Fase 1).")
+    lines.append(f"Este documento se genero automaticamente desde el analisis del repositorio ({phase_label}).")
 
     return "\n".join(lines) + "\n"
 
@@ -169,11 +209,12 @@ def _render_architecture(state: AgentState) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _render_improvements(state: AgentState) -> str:
+def _render_improvements(state: AgentState, phase: str) -> str:
     opportunities = state.get("opportunities", [])
+    phase_label = "Fase 2" if phase == "phase2" else "Fase 1"
 
     lines: list[str] = []
-    lines.append("# Oportunidades de mejora (Fase 1)")
+    lines.append(f"# Oportunidades de mejora ({phase_label})")
     lines.append("")
     lines.append("Estas propuestas se basan en evidencia observada durante discovery.")
     lines.append("")
@@ -202,6 +243,70 @@ def _render_improvements(state: AgentState) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _render_perception_report(state: AgentState) -> str:
+    perception_map = state.get("perception_map", {}) if isinstance(state.get("perception_map", {}), dict) else {}
+    summary = perception_map.get("summary", {}) if isinstance(perception_map.get("summary", {}), dict) else {}
+    screens = perception_map.get("screens", []) if isinstance(perception_map.get("screens", []), list) else []
+    flows = perception_map.get("flows", []) if isinstance(perception_map.get("flows", []), list) else []
+    ui_issues = perception_map.get("ui_issues", []) if isinstance(perception_map.get("ui_issues", []), list) else []
+
+    lines: list[str] = []
+    lines.append("# Percepcion UI (Fase 2)")
+    lines.append("")
+    lines.append("Reporte generado automaticamente por el Perception Agent en modo controlado.")
+    lines.append("")
+    lines.append("## Resumen")
+    lines.append("")
+    lines.append(f"- URL base: {perception_map.get('base_url') or 'no configurada'}")
+    lines.append(f"- Pantallas evaluadas: {summary.get('screens_total', 0)}")
+    lines.append(f"- Pantallas alcanzables: {summary.get('screens_reachable', 0)}")
+    lines.append(f"- Screenshots capturados: {summary.get('screens_with_screenshot', 0)}")
+    lines.append(f"- Flujos detectados: {summary.get('flows_detected', 0)}")
+    lines.append(f"- Hallazgos UI accionables: {summary.get('ui_issues', 0)}")
+    lines.append("")
+
+    lines.append("## Inventario de pantallas")
+    lines.append("")
+    if screens:
+        lines.append("| Ruta | Estado | Title/H1 | Screenshot |")
+        lines.append("| --- | --- | --- | --- |")
+        for screen in screens[:30]:
+            route = str(screen.get("route", "/"))
+            status = str(screen.get("status", "unknown"))
+            title = str(screen.get("title") or screen.get("h1") or "-")
+            screenshot = str(screen.get("screenshot") or "-")
+            lines.append(f"| {route} | {status} | {title} | {screenshot} |")
+    else:
+        lines.append("- No se registraron pantallas en esta corrida.")
+    lines.append("")
+
+    lines.append("## Flujos detectados")
+    lines.append("")
+    if flows:
+        for flow in flows[:10]:
+            name = flow.get("name", "flujo")
+            confidence = flow.get("confidence", "unknown")
+            steps = flow.get("steps", [])
+            steps_repr = " -> ".join(str(item) for item in steps) if isinstance(steps, list) else str(steps)
+            lines.append(f"- {name} ({confidence}): {steps_repr}")
+    else:
+        lines.append("- No se detectaron flujos en esta corrida.")
+    lines.append("")
+
+    lines.append("## Hallazgos UI accionables")
+    lines.append("")
+    if ui_issues:
+        for issue in ui_issues[:20]:
+            severity = issue.get("severity", "info")
+            title = issue.get("title", "Sin titulo")
+            action = issue.get("action", "Sin accion sugerida")
+            lines.append(f"- [{severity}] {title} -> {action}")
+    else:
+        lines.append("- Sin hallazgos UI en esta corrida.")
+
+    return "\n".join(lines) + "\n"
+
+
 def run_generation(state: AgentState) -> AgentState:
     runtime = dict(state.get("runtime", {}))
     phase = str(runtime.get("phase", "phase0"))
@@ -214,10 +319,11 @@ def run_generation(state: AgentState) -> AgentState:
     readme_path = workspace / "README.md"
     architecture_path = workspace / "docs" / "architecture.md"
     improvements_path = workspace / "docs" / "improvements.md"
+    perception_path = workspace / "docs" / "perception.md"
 
-    readme_content = _render_readme(state)
+    readme_content = _render_readme(state, phase)
     architecture_content = _render_architecture(state)
-    improvements_content = _render_improvements(state)
+    improvements_content = _render_improvements(state, phase)
 
     backups: dict[str, str] = {}
     readme_backup = _write_with_backup(readme_path, readme_content, timestamp)
@@ -232,16 +338,30 @@ def run_generation(state: AgentState) -> AgentState:
     if improvements_backup:
         backups["docs/improvements.md"] = improvements_backup
 
+    if phase == "phase2":
+        perception_content = _render_perception_report(state)
+        perception_backup = _write_with_backup(perception_path, perception_content, timestamp)
+        if perception_backup:
+            backups["docs/perception.md"] = perception_backup
+
     generated_artifacts = {
         "readme": str(readme_path),
         "architecture": str(architecture_path),
         "improvements": str(improvements_path),
     }
+    if phase == "phase2":
+        generated_artifacts["perception"] = str(perception_path)
+
     if backups:
         generated_artifacts["backups"] = str(backups)
 
     notes = list(state.get("notes", []))
-    notes.append("Phase 1 generation completed: README, docs/architecture.md, docs/improvements.md")
+    if phase == "phase2":
+        notes.append(
+            "Phase 2 generation completed: README, docs/architecture.md, docs/improvements.md, docs/perception.md"
+        )
+    else:
+        notes.append("Phase 1 generation completed: README, docs/architecture.md, docs/improvements.md")
 
     return {
         "generated_artifacts": generated_artifacts,

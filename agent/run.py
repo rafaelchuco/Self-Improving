@@ -23,9 +23,9 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--phase",
-        choices=["phase0", "phase1"],
+        choices=["phase0", "phase1", "phase2"],
         default="phase1",
-        help="Execution phase. phase0=discovery only, phase1=discovery+generation.",
+        help="Execution phase. phase0=discovery only, phase1=discovery+generation, phase2=discovery+perception+generation.",
     )
     parser.add_argument(
         "--output",
@@ -80,6 +80,15 @@ def main() -> int:
     print(f"[{phase}] Key files found: {len(key_files)}")
     print(f"[{phase}] Tests found: {tests_found}")
     print(f"[{phase}] Opportunities identified: {len(opportunities)}")
+
+    perception = result.get("perception_map", {})
+    if perception:
+        screens = perception.get("screens", [])
+        flows = perception.get("flows", [])
+        issues = perception.get("ui_issues", [])
+        print(f"[{phase}] Screens mapped: {len(screens)}")
+        print(f"[{phase}] Flows detected: {len(flows)}")
+        print(f"[{phase}] UI issues detected: {len(issues)}")
 
     generated = result.get("generated_artifacts", {})
     if generated:
