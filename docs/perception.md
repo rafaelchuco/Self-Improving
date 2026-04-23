@@ -4,25 +4,25 @@ Reporte generado automaticamente por el Perception Agent en modo controlado.
 
 ## Resumen
 
-- URL base: no configurada
+- URL base: http://127.0.0.1:4173
 - Pantallas evaluadas: 3
-- Pantallas alcanzables: 0
-- Screenshots capturados: 0
-- Flujos detectados: 0
-- Hallazgos UI accionables: 1
+- Pantallas alcanzables: 3
+- Screenshots capturados: 3
+- Flujos detectados: 1
+- Hallazgos UI accionables: 0
 
 ## Inventario de pantallas
 
-| Ruta | Estado | Title/H1 | Screenshot |
-| --- | --- | --- | --- |
-| / | skipped_no_base_url | - | - |
-| /login | skipped_no_base_url | - | - |
-| /dashboard | skipped_no_base_url | - | - |
+| Ruta | Estado | Title/H1 | Screenshot | Referencias |
+| --- | --- | --- | --- | --- |
+| / | reachable | Self Improving Demo Home | docs/perception/screens/root.png | demo_ui/dashboard/index.html, demo_ui/index.html, demo_ui/login/index.html |
+| /login | reachable | Self Improving Login | docs/perception/screens/login.png | demo_ui/login/index.html |
+| /dashboard | reachable | Self Improving Dashboard | docs/perception/screens/dashboard.png | demo_ui/dashboard/index.html |
 
 ## Flujos detectados
 
-- No se detectaron flujos en esta corrida.
+- login_to_dashboard (high): / -> /login -> /dashboard
 
 ## Hallazgos UI accionables
 
-- [high] Configurar app.local_url para exploracion visual -> Define una URL local accesible (ej. http://localhost:3000) en AGENT_CONFIG.yaml.
+- Sin hallazgos UI en esta corrida.

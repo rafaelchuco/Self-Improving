@@ -7,7 +7,7 @@ README generado automaticamente por Self-Improving Agent (Fase 2).
 - Tipo de proyecto detectado: **backend**
 - Stack detectado: **Python**
 - Branch actual: **main**
-- Analisis generado en UTC: **20260423T045822Z**
+- Analisis generado en UTC: **20260423T051515Z**
 
 ## Ejecucion
 
@@ -18,7 +18,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # Comando sugerido por AGENT_CONFIG
-python run.py --workspace . --phase phase1
+python -m http.server 4173 -d demo_ui
 ```
 
 ## Estructura principal
@@ -28,6 +28,7 @@ python run.py --workspace . --phase phase1
 - `README.md`
 - `agent`
 - `config`
+- `demo_ui`
 - `docs`
 - `logs`
 - `requirements.txt`
@@ -37,7 +38,7 @@ python run.py --workspace . --phase phase1
 
 | Modulo | Archivos fuente | Lineas aproximadas |
 | --- | ---: | ---: |
-| agent | 11 | 1584 |
+| agent | 11 | 1909 |
 | root | 1 | 6 |
 
 ## Rutas detectadas
@@ -50,22 +51,18 @@ python run.py --workspace . --phase phase1
 
 ## Percepcion UI
 
-- URL base analizada: **no configurada**
+- URL base analizada: **http://127.0.0.1:4173**
 - Pantallas evaluadas: **3**
-- Pantallas alcanzables: **0**
-- Screenshots capturados: **0**
-- Flujos detectados: **0**
-- Hallazgos UI accionables: **1**
+- Pantallas alcanzables: **3**
+- Screenshots capturados: **3**
+- Flujos detectados: **1**
+- Hallazgos UI accionables: **0**
 
 ### Pantallas mapeadas
 
-- `/` -> skipped_no_base_url
-- `/login` -> skipped_no_base_url
-- `/dashboard` -> skipped_no_base_url
-
-### Hallazgos UI
-
-- Configurar app.local_url para exploracion visual -> Define una URL local accesible (ej. http://localhost:3000) en AGENT_CONFIG.yaml.
+- `/` -> reachable (screenshot: `docs/perception/screens/root.png`) (related: demo_ui/dashboard/index.html, demo_ui/index.html, demo_ui/login/index.html)
+- `/login` -> reachable (screenshot: `docs/perception/screens/login.png`) (related: demo_ui/login/index.html)
+- `/dashboard` -> reachable (screenshot: `docs/perception/screens/dashboard.png`) (related: demo_ui/dashboard/index.html)
 
 ## Consistencia de configuracion
 
@@ -73,9 +70,9 @@ python run.py --workspace . --phase phase1
 
 ## Hotspots tecnicos
 
+- `agent/nodes/perception.py` (698 lineas)
 - `agent/nodes/discovery.py` (391 lineas)
-- `agent/nodes/perception.py` (380 lineas)
-- `agent/nodes/generation.py` (370 lineas)
+- `agent/nodes/generation.py` (377 lineas)
 - `agent/adapters/filesystem_adapter.py` (164 lineas)
 - `agent/run.py` (110 lineas)
 - `agent/adapters/git_adapter.py` (81 lineas)
@@ -85,8 +82,8 @@ python run.py --workspace . --phase phase1
 ## Oportunidades iniciales
 
 - [L2] Crear base de tests automatizados -> No se detectaron archivos de tests en el repositorio.
-- [L3] Refactorizar archivo de alta complejidad -> agent/nodes/discovery.py tiene 391 lineas.
-- [L2] Agregar cobertura sobre zona de alta rotacion -> agent/nodes/discovery.py aparece como archivo de alta frecuencia de cambios.
+- [L3] Refactorizar archivo de alta complejidad -> agent/nodes/perception.py tiene 698 lineas.
+- [L2] Agregar cobertura sobre zona de alta rotacion -> agent/run.py aparece como archivo de alta frecuencia de cambios.
 - [L1] Documentar rutas y flujos principales -> No se detectaron rutas explicitas con heuristicas actuales.
 
 ## Trazabilidad

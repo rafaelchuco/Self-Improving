@@ -127,9 +127,12 @@ def _render_readme(state: AgentState, phase: str) -> str:
                 route = screen.get("route", "/")
                 status = screen.get("status", "unknown")
                 screenshot = screen.get("screenshot")
+                related_files = screen.get("related_files", [])
                 details = f"- `{route}` -> {status}"
                 if screenshot:
                     details += f" (screenshot: `{screenshot}`)"
+                if isinstance(related_files, list) and related_files:
+                    details += f" (related: {', '.join(str(item) for item in related_files[:3])})"
                 lines.append(details)
             lines.append("")
 
@@ -268,14 +271,18 @@ def _render_perception_report(state: AgentState) -> str:
     lines.append("## Inventario de pantallas")
     lines.append("")
     if screens:
-        lines.append("| Ruta | Estado | Title/H1 | Screenshot |")
-        lines.append("| --- | --- | --- | --- |")
+        lines.append("| Ruta | Estado | Title/H1 | Screenshot | Referencias |")
+        lines.append("| --- | --- | --- | --- | --- |")
         for screen in screens[:30]:
             route = str(screen.get("route", "/"))
             status = str(screen.get("status", "unknown"))
             title = str(screen.get("title") or screen.get("h1") or "-")
             screenshot = str(screen.get("screenshot") or "-")
-            lines.append(f"| {route} | {status} | {title} | {screenshot} |")
+            related_files = screen.get("related_files", [])
+            related_repr = "-"
+            if isinstance(related_files, list) and related_files:
+                related_repr = ", ".join(str(item) for item in related_files[:3])
+            lines.append(f"| {route} | {status} | {title} | {screenshot} | {related_repr} |")
     else:
         lines.append("- No se registraron pantallas en esta corrida.")
     lines.append("")
