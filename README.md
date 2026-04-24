@@ -1,13 +1,13 @@
 # My Project
 
-README generado automaticamente por Self-Improving Agent (Fase 1).
+README generado automaticamente por Self-Improving Agent (Fase 2).
 
 ## Contexto
 
 - Tipo de proyecto detectado: **backend**
 - Stack detectado: **Python**
 - Branch actual: **main**
-- Analisis generado en UTC: **20260424T230824Z**
+- Analisis generado en UTC: **20260424T230926Z**
 
 ## Ejecucion
 
@@ -18,7 +18,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # Comando sugerido por AGENT_CONFIG
-python -m http.server 4173 -d demo_ui
+python3 -m http.server 4173 -d demo_ui
 ```
 
 ## Estructura principal
@@ -49,6 +49,21 @@ python -m http.server 4173 -d demo_ui
 
 - Tests encontrados: **0**
 
+## Percepcion UI
+
+- URL base analizada: **http://127.0.0.1:4173**
+- Pantallas evaluadas: **3**
+- Pantallas alcanzables: **3**
+- Screenshots capturados: **3**
+- Flujos detectados: **1**
+- Hallazgos UI accionables: **0**
+
+### Pantallas mapeadas
+
+- `/` -> reachable (screenshot: `docs/perception/screens/root.png`) (related: demo_ui/dashboard/index.html, demo_ui/index.html, demo_ui/login/index.html)
+- `/login` -> reachable (screenshot: `docs/perception/screens/login.png`) (related: demo_ui/login/index.html)
+- `/dashboard` -> reachable (screenshot: `docs/perception/screens/dashboard.png`) (related: demo_ui/dashboard/index.html)
+
 ## Consistencia de configuracion
 
 - Sin contradicciones detectadas entre AGENT_CONFIG y evidencia del repo.
@@ -73,4 +88,4 @@ python -m http.server 4173 -d demo_ui
 
 ## Trazabilidad
 
-Este documento se genero automaticamente desde el analisis del repositorio (Fase 1).
+Este documento se genero automaticamente desde el analisis del repositorio (Fase 2).

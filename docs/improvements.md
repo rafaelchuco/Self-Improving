@@ -1,4 +1,4 @@
-# Oportunidades de mejora (Fase 1)
+# Oportunidades de mejora (Fase 2)
 
 Estas propuestas se basan en evidencia observada durante discovery.
 

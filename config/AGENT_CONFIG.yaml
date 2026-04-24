@@ -6,7 +6,7 @@ project:
 
 app:
   local_url: "http://127.0.0.1:4173"
-  start_command: "python -m http.server 4173 -d demo_ui"
+  start_command: "python3 -m http.server 4173 -d demo_ui"
 
 auth:
   enabled: true
