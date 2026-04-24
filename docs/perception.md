@@ -16,8 +16,8 @@ Reporte generado automaticamente por el Perception Agent en modo controlado.
 | Ruta | Estado | Title/H1 | Screenshot | Referencias |
 | --- | --- | --- | --- | --- |
 | / | reachable | Self Improving Demo Home | docs/perception/screens/root.png | demo_ui/dashboard/index.html, demo_ui/index.html, demo_ui/login/index.html |
-| /login | reachable | Self Improving Login | docs/perception/screens/login.png | demo_ui/login/index.html |
-| /dashboard | reachable | Self Improving Dashboard | docs/perception/screens/dashboard.png | demo_ui/dashboard/index.html |
+| /login | reachable | Self Improving Login | docs/perception/screens/login.png | demo_ui/login/index.html, docs/perception/screens/login.png |
+| /dashboard | reachable | Self Improving Dashboard | docs/perception/screens/dashboard.png | demo_ui/dashboard/index.html, docs/perception/screens/dashboard.png |
 
 ## Flujos detectados
 

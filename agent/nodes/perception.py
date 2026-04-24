@@ -291,6 +291,13 @@ def _related_files_for_route(route: str, repo_map: dict[str, Any]) -> list[str]:
     ranked: list[tuple[int, str]] = []
     for path in candidates:
         lower = path.lower()
+        if lower.startswith("docs/perception/"):
+            continue
+        if lower.endswith((".png", ".jpg", ".jpeg", ".gif", ".webp")):
+            continue
+        if "/.agent_backups/" in lower or lower.startswith(".agent_backups/"):
+            continue
+
         score = 0
         for token in tokens:
             token_lower = token.lower()

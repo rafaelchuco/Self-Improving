@@ -1,4 +1,4 @@
-# Oportunidades de mejora (Fase 2)
+# Oportunidades de mejora (Fase 1)
 
 Estas propuestas se basan en evidencia observada durante discovery.
 
@@ -12,10 +12,10 @@ Estas propuestas se basan en evidencia observada durante discovery.
 - **Crear base de tests automatizados**
   - Evidencia: No se detectaron archivos de tests en el repositorio.
 - **Agregar cobertura sobre zona de alta rotacion**
-  - Evidencia: agent/run.py aparece como archivo de alta frecuencia de cambios.
+  - Evidencia: README.md aparece como archivo de alta frecuencia de cambios.
 
 ## L3
 
 - **Refactorizar archivo de alta complejidad**
-  - Evidencia: agent/nodes/perception.py tiene 698 lineas.
+  - Evidencia: agent/nodes/perception.py tiene 705 lineas.
 
